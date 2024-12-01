@@ -976,6 +976,12 @@ if (onnxruntime_FORCE_GENERIC_ALGORITHMS)
     add_compile_definitions(FORCE_GENERIC_ALGORITHMS)
 endif()
 
+if (onnxruntime_USE_VK)
+    list(APPEND ORT_PROVIDER_FLAGS  -DUSE_VK=1)
+    list(APPEND ORT_PROVIDER_CMAKE_FLAGS -Donnxruntime_USE_VK=1)
+    list(APPEND ONNXRUNTIME_PROVIDER_NAMES vk)
+endif()
+
 if (onnxruntime_ENABLE_LAZY_TENSOR)
   # To support LazyTensor, ORT needs to call Python function from C/C++.
   # so onnxruntime_ENABLE_PYTHON is required.

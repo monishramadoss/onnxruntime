@@ -206,7 +206,9 @@ def parse_arguments():
     parser.add_argument(
         "--use_mpi", nargs="?", default=False, const=True, type=_str_to_bool, help="Disabled by default."
     )
-
+    parser.add_argument(
+        '--use_vk', action='store_true', help='Build with Vulkan EP.'
+    )
     # enable ONNX tests
     parser.add_argument(
         "--enable_onnx_tests",
@@ -309,6 +311,8 @@ def parse_arguments():
     parser.add_argument(
         "--build_apple_framework", action="store_true", help="Build a macOS/iOS framework for the ONNXRuntime."
     )
+
+
 
     # Build options
     parser.add_argument(
@@ -1236,6 +1240,8 @@ def generate_build_tree(
     # VitisAI and OpenVINO providers currently only support full_protobuf option.
     if args.use_full_protobuf or args.use_openvino or args.use_vitisai or args.gen_doc:
         cmake_args += ["-Donnxruntime_USE_FULL_PROTOBUF=ON", "-DProtobuf_USE_STATIC_LIBS=ON"]
+    if args.use_vk:
+        cmake_args += ["-Donnxruntime_USE_VK=ON"]
 
     if args.use_cuda and not is_windows():
         nvml_stub_path = cuda_home + "/lib64/stubs"
